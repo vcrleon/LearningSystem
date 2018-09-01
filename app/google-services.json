@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "550858886048",
+    "firebase_url": "https://passionproject-8daa4.firebaseio.com",
+    "project_id": "passionproject-8daa4",
+    "storage_bucket": "passionproject-8daa4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:550858886048:android:c557001ba943a7b0",
+        "android_client_info": {
+          "package_name": "com.example.c4q.learningsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "550858886048-aq770ajbpfvggj92fjd5oics1rrgflhd.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "550858886048-aq770ajbpfvggj92fjd5oics1rrgflhd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC35cFZ_SY-hVhIwnksl1mTkULwpTEnr7Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
