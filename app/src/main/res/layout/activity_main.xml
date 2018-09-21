@@ -55,4 +55,14 @@
         android:background="@color/colorPrimary"
         android:text="@string/login" />
 
+    <Button
+        android:id="@+id/signup_button"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@color/lightOrange"
+        android:text="@string/sign_up" />
+
+
 </LinearLayout>

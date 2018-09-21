@@ -17,7 +17,7 @@
         android:text="@string/add_new_lesson" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/courses_rv"
+        android:id="@+id/lessons_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="15dp">
