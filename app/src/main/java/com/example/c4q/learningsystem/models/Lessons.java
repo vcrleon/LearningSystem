@@ -1,5 +1,7 @@
 package com.example.c4q.learningsystem.models;
 
+import android.net.Uri;
+
 import java.util.List;
 
 /**
@@ -10,54 +12,67 @@ public class Lessons {
     private String title;
     private String date;
     private String time;
-    private List<String> lectureUrls;
-    private List<String> homeworkUrls;
+    private String lectureUrl;
+    private String homeworkUrl;
+    private String lessonId;
 
-    public Lessons(String title, String date, String time, List<String> lectureUrls, List<String> homeworkUrls) {
+    public Lessons(){
+
+    }
+
+    public Lessons(String title, String date, String time, String lectureUrl, String homeworkUrl, String lessonId) {
         this.title = title;
         this.date = date;
         this.time = time;
-        this.lectureUrls = lectureUrls;
-        this.homeworkUrls = homeworkUrls;
+        this.lectureUrl = lectureUrl;
+        this.homeworkUrl = homeworkUrl;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDate() {
         return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getTime() {
         return time;
     }
 
+    public String getLectureUrl() {
+        return lectureUrl;
+    }
+
+    public String getHomeworkUrl() {
+        return homeworkUrl;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public void setTime(String time) {
         this.time = time;
     }
 
-    public List<String> getLectureUrls() {
-        return lectureUrls;
+    public void setLectureUrl(String lectureUrl) {
+        this.lectureUrl = lectureUrl;
     }
 
-    public void setLectureUrls(List<String> lectureUrls) {
-        this.lectureUrls = lectureUrls;
+    public void setHomeworkUrl(String homeworkUrl) {
+        this.homeworkUrl = homeworkUrl;
     }
 
-    public List<String> getHomeworkUrls() {
-        return homeworkUrls;
+    public String getLessonId() {
+        return lessonId;
     }
 
-    public void setHomeworkUrls(List<String> homeworkUrls) {
-        this.homeworkUrls = homeworkUrls;
+    public void setLessonId(String lessonId) {
+        this.lessonId = lessonId;
     }
 }
