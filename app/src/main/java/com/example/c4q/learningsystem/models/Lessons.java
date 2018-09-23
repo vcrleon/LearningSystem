@@ -26,6 +26,7 @@ public class Lessons {
         this.time = time;
         this.lectureUrl = lectureUrl;
         this.homeworkUrl = homeworkUrl;
+        this.lessonId = lessonId;
     }
 
     public String getTitle() {
