@@ -77,13 +77,9 @@ public class NewLessonFragment extends Fragment {
 
     private View rootview;
 
-    List<String> notesURLs = new ArrayList<>();
-    List<String> hwURLS = new ArrayList<>();
-
-
     private DatabaseReference currentDBUser;
-    List<Uri> notesPics = new ArrayList<>();
-    List<Uri> hwPics = new ArrayList<>();
+    String notesPics;
+    String hwPics;
 
     private StorageReference storageReference;
 
@@ -126,9 +122,6 @@ public class NewLessonFragment extends Fragment {
             }
         });
 
-//        lectureImage.setImageURI(galleryAddPic());
-
-//        galleryAddPic();
 
         return rootview;
     }
@@ -137,26 +130,28 @@ public class NewLessonFragment extends Fragment {
         String title = lessonTitle.getText().toString();
         String date = lessonDate.getText().toString();
         String time = lessonTime.getText().toString();
-        String lectureURL = "testing";
-        String hwURL = "testing";
-
-
-//        FirebaseUser user = firebaseAuth.getCurrentUser();
-//        String userId = user.getUid();
+        String notesImage = getNotesPics();
+        String hwImage = getHwPics();
 
         String lessonId = currentDBUser.push().getKey();
-        Lessons lesson = new Lessons(title, date, time, lectureURL, hwURL, lessonId);
+        Lessons lesson = new Lessons(title, date, time, notesImage, hwImage, lessonId);
         currentDBUser.child(lessonId).setValue(lesson);
         userLessons.add(lesson);
+
 
         Toast.makeText(getActivity(), "Lesson Created!", Toast.LENGTH_SHORT).show();
         getActivity().onBackPressed();
 
     }
 
-    public List<Lessons> getUserLessons(){
-        return userLessons;
+    public String getNotesPics(){
+        return notesPics;
     }
+
+    public String getHwPics(){
+        return hwPics;
+    }
+
 
     public void takeLecturePic() {
         lecturePicBttn.setOnClickListener(new View.OnClickListener() {
@@ -198,9 +193,9 @@ public class NewLessonFragment extends Fragment {
                 storageDir
         );
 
-        if(requestCode == REQUEST_LECTURE_CAPTURE){
+        if (requestCode == REQUEST_LECTURE_CAPTURE) {
             notesPicPath = image.getAbsolutePath();
-        } else if(requestCode == REQUEST_HOMEWORK_CAPTURE){
+        } else if (requestCode == REQUEST_HOMEWORK_CAPTURE) {
             hwPicPath = image.getAbsolutePath();
         }
 
@@ -237,32 +232,26 @@ public class NewLessonFragment extends Fragment {
                     if (resultCode == RESULT_OK) {
                         File file = new File(notesPicPath);
 
-                        /***
-                         * COME BACK TO THIS
-                         */
-
-                        //                        storageReference.child(notesPicPath);
-//                        putImageInStorage(storageReference, Uri.fromFile(file));
-
-//                        uploadImage(Uri.fromFile(file));
+                        uploadImage(Uri.fromFile(file), notesPicPath, REQUEST_LECTURE_CAPTURE);
 
                         Bitmap bitmap = MediaStore.Images.Media
                                 .getBitmap(getContext().getContentResolver(), Uri.fromFile(file));
                         if (bitmap != null) {
                             lectureImage.setImageBitmap(bitmap);
-
                         }
                     }
                     break;
                 }
 
                 case REQUEST_HOMEWORK_CAPTURE: {
-                    if(resultCode == RESULT_OK) {
+                    if (resultCode == RESULT_OK) {
                         File file = new File(hwPicPath);
-//                        uploadImage(Uri.fromFile(file));
+
+                        uploadImage(Uri.fromFile(file), hwPicPath, REQUEST_HOMEWORK_CAPTURE);
+
                         Bitmap bitmap = MediaStore.Images.Media
                                 .getBitmap(getContext().getContentResolver(), Uri.fromFile(file));
-                        if(bitmap != null){
+                        if (bitmap != null) {
                             hwImage.setImageBitmap(bitmap);
                         }
                     }
@@ -275,47 +264,33 @@ public class NewLessonFragment extends Fragment {
         }
     }
 
-//    private void uploadImage(Uri uri){
-//        StorageReference riversRef = storageReference.child("images/users/" + userId + notesPicPath + ".jpg");
-//
-//        riversRef.putFile(uri)
-//                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        // Get a URL to the uploaded content
-//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//                        // Handle unsuccessful uploads
-//                        // ...
-//                    }
-//                });
-//    }
+    private void uploadImage(Uri uri, final String picturePath, final int requestCode){
+        final StorageReference riversRef = storageReference.child("images/users/" + userId + picturePath);
 
+        riversRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
-    /**
-     *COME BACK TO THISSSSSSS!!!!!!!!!!!!!!
-     */
-    private void putImageInStorage(StorageReference storageReference, Uri uri) {
-        storageReference.putFile(uri).addOnCompleteListener(
-                new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if (task.isSuccessful()) {
-//                            notesURLs.add(task.getResult().getMetadata().getDownloadUrl().toString());
-                            notesURLs.add(task.getResult().getMetadata().getPath());
-                        } else {
-                            Log.e(TAG, "Image upload task was not successful.", task.getException());
+                    public void onSuccess(Uri uri) {
+                        switch (requestCode){
+                            case REQUEST_LECTURE_CAPTURE: {
+                                notesPics = uri.toString();
+                                Log.e("Notes URI Uploaded: ", notesPics);
+                                break;
+                            }
+                            case REQUEST_HOMEWORK_CAPTURE: {
+                                hwPics = uri.toString();
+                                Log.e("HW URI Uploaded: ", hwPics);
+                                break;
+                            }
                         }
                     }
                 });
+            }
+        });
     }
 
-
 }
-
-
-

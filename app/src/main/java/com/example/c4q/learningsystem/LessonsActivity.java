@@ -2,8 +2,6 @@ package com.example.c4q.learningsystem;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +19,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -38,7 +35,7 @@ public class LessonsActivity extends AppCompatActivity {
     User user;
 
     RecyclerView lessonRV;
-    List<Lessons> lessonsList;
+    List<Lessons> lessonsList = new ArrayList<>();
 
 
     private FirebaseDatabase firebaseDatabase;
@@ -54,22 +51,16 @@ public class LessonsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         createNewLesson();
 
-
-         lessonRV = findViewById(R.id.lessons_rv);
+        lessonRV = findViewById(R.id.lessons_rv);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         lessonRV.setLayoutManager(linearLayoutManager);
-
-        lessonsList = new ArrayList<>();
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
          databaseReference = firebaseDatabase.getReference("users").child("8VjZWjZIHdSwX6KBmqUVccxX16Z2").child("lessons");
         FirebaseUser user = firebaseAuth.getCurrentUser();
         userId = user.getUid();
-
-//        NewLessonFragment lessonFragment = new NewLessonFragment();
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("lessons");
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -83,11 +74,19 @@ public class LessonsActivity extends AppCompatActivity {
             }
         };
 
-//        lessonsList = new ArrayList<>();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                showData(dataSnapshot);
+
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    Lessons lessons = ds.getValue(Lessons.class);
+                    lessonsList.add(lessons);
+                }
+
+                LessonAdapter lessonAdapter = new LessonAdapter(lessonsList);
+                Collections.reverse(lessonsList);
+                lessonRV.setAdapter(lessonAdapter);
+
             }
 
             @Override
@@ -96,29 +95,6 @@ public class LessonsActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-    }
-
-    private void showData(DataSnapshot dataSnapshot) {
-
-//        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//            lessonsList.add(ds.getValue(Lessons.class));
-//        }
-//
-//        lessonsList.add(dataSnapshot.getValue(Lessons.class));
-//        Log.d("size:", lessonsList.size()+"");
-
-        for (DataSnapshot ds: dataSnapshot.getChildren()) {
-
-            Lessons lessons = ds.getValue(Lessons.class);
-            lessonsList.add(lessons);
-        }
-        Collections.reverse(lessonsList);
-        LessonAdapter lessonAdapter = new LessonAdapter(lessonsList);
-        lessonRV.setAdapter(lessonAdapter);
-
     }
 
     public void createNewLesson() {
@@ -126,10 +102,7 @@ public class LessonsActivity extends AppCompatActivity {
         addLessonBttn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Log.e("button clicked", "opens fragment");
-
-                Intent i = new Intent(LessonsActivity.this, LessonDetails.class);
+                Intent i = new Intent(LessonsActivity.this, NewLesson.class);
                 startActivity(i);
 
             }
