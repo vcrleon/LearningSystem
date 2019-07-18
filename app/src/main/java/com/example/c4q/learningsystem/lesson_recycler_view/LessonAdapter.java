@@ -32,7 +32,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonViewHolder> {
     public LessonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lessons_itemview, parent, false);
         return new LessonViewHolder(view);
-    }
+    } 
 
     @Override
     public void onBindViewHolder(@NonNull LessonViewHolder holder, int position) {
