@@ -2,7 +2,6 @@ package com.example.c4q.learningsystem.ui;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,8 +14,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.c4q.learningsystem.FragmentNavigator;
-import com.example.c4q.learningsystem.LessonsActivity;
-import com.example.c4q.learningsystem.MainActivity;
 import com.example.c4q.learningsystem.R;
 import com.example.c4q.learningsystem.models.Lessons;
 import com.example.c4q.learningsystem.models.User;

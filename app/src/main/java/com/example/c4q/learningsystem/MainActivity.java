@@ -1,32 +1,13 @@
 package com.example.c4q.learningsystem;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.c4q.learningsystem.models.Lessons;
-import com.example.c4q.learningsystem.models.User;
 import com.example.c4q.learningsystem.ui.LessonsFragment;
+import com.example.c4q.learningsystem.ui.NewLessonFragment;
 import com.example.c4q.learningsystem.ui.SignIn;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements FragmentNavigator{
 
@@ -58,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements FragmentNavigator
 
     @Override
     public void displayNewLessonForm() {
+        final Fragment newLessonFragment = NewLessonFragment.newInstance();
+        inflateFragment(newLessonFragment);
     }
 
     public void inflateFragment(@NonNull Fragment fragment){

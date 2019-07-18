@@ -1,4 +1,4 @@
-package com.example.c4q.learningsystem;
+package com.example.c4q.learningsystem.ui;
 
 
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
@@ -20,11 +19,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.c4q.learningsystem.R;
 import com.example.c4q.learningsystem.models.Lessons;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -44,7 +41,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.ContentValues.TAG;
 
 
 /**
@@ -87,11 +83,19 @@ public class NewLessonFragment extends Fragment {
 
     String userId;
 
-    List<Lessons> userLessons = new ArrayList<>();
+    List<Lessons> userLessons;
 
 
     public NewLessonFragment() {
         // Required empty public constructor
+    }
+
+    public static NewLessonFragment newInstance() {
+
+        Bundle args = new Bundle();
+        NewLessonFragment fragment = new NewLessonFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
 
@@ -122,11 +126,14 @@ public class NewLessonFragment extends Fragment {
             }
         });
 
+//        userLessons = new ArrayList<>();
+
 
         return rootview;
     }
 
     private void createLesson() {
+        userLessons = new ArrayList<>();
         String title = lessonTitle.getText().toString();
         String date = lessonDate.getText().toString();
         String time = lessonTime.getText().toString();
@@ -136,7 +143,7 @@ public class NewLessonFragment extends Fragment {
         String lessonId = currentDBUser.push().getKey();
         Lessons lesson = new Lessons(title, date, time, notesImage, hwImage, lessonId);
         currentDBUser.child(lessonId).setValue(lesson);
-        userLessons.add(lesson);
+//        userLessons.add(lesson);
 
 
         Toast.makeText(getActivity(), "Lesson Created!", Toast.LENGTH_SHORT).show();
